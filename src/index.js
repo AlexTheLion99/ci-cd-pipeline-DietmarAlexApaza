@@ -17,7 +17,7 @@ app.use((req, res, next) => {
 app.use(express.json());
 
 app.get('/', (req, res) => {
-  res.send('Hola mundo!');
+  res.send('Hola mundo como va en esta vida!');
 });
 
 app.get('/suma', (req, res) => {
@@ -29,7 +29,7 @@ app.get('/suma', (req, res) => {
   res.json({ result });
 });
 
-app.get('/subtract', (req, res) => {
+app.get('/resta', (req, res) => {
   const { a, b } = req.query;
   if (isNaN(a) || isNaN(b)) {
     return res.status(400).json({ error: 'Parámetros inválidos' });
@@ -47,11 +47,15 @@ app.get('/multiplicacion', (req, res) => {
   res.json({ result });
 });
 
-app.use((err, req, res) => {
+app.use((err, _req, res, _next) => {
   console.error('Error no controlado:', err.stack);
   res.status(500).json({ error: 'Error interno del servidor' });
 });
 
-app.listen(PORT, () => {
-  console.log(`🚀 Servidor escuchando en http://localhost:${PORT} [${ENV}]`);
-});
+module.exports = app;
+
+if (require.main === module) {
+  app.listen(PORT, () => {
+    console.log(`🚀 Servidor escuchando en http://localhost:${PORT} [${ENV}]`);
+  });
+}
